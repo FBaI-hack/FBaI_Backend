@@ -35,4 +35,8 @@ public class Suspect {
         suspect.count = 0;
         return suspect;
     }
+
+    public void countIncrement(){
+        this.count++;
+    }
 }

@@ -31,4 +31,11 @@ public class SuspectService {
 
         return CommonSuccessDto.success();
     }
+
+    @Transactional
+    public Suspect getSuspects(String name, String email, String bank, String account, String platform) {
+        Suspect suspect = suspectRepository.findBySuspectInfo(name,email,bank,account,platform);
+        suspect.countIncrement();
+        return suspect;
+    }
 }

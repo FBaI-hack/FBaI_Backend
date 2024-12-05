@@ -5,7 +5,11 @@ import lombok.Builder;
 @Builder
 public record CommonSuccessDto(boolean isSuccess) {
 
-  public static CommonSuccessDto fromEntity(boolean success) {
-    return CommonSuccessDto.builder().isSuccess(success).build();
+  public static CommonSuccessDto success() {
+    return new CommonSuccessDto(true);
+  }
+
+  public static CommonSuccessDto fail() {
+    return new CommonSuccessDto(false);
   }
 }

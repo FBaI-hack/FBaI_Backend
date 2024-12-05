@@ -1,4 +1,4 @@
-package bigtech.fbai.post.dao.entity;
+package bigtech.fbai.suspect.dao.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,4 +25,14 @@ public class Suspect {
     private String account;
     private String platform;
 
+    public static Suspect create(String name, String email, String bank, String account, String platform) {
+        Suspect suspect = new Suspect();
+        suspect.name = name;
+        suspect.email = email;
+        suspect.bank = bank;
+        suspect.account = account;
+        suspect.platform = platform;
+        suspect.count = 0;
+        return suspect;
+    }
 }

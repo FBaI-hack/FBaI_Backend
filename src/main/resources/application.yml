@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/fbai}
     username: ${DB_USER:root}
-    password: ${DB_PASSWORD:password}
+    password: ${DB_PASSWORD:1234}
   jpa:
     properties:
       format_sql: true

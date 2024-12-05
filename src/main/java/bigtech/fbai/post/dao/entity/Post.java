@@ -46,6 +46,15 @@ public class Post {
     @OnDelete(action = SET_NULL)
     private Suspect suspectEntity;
 
+    public static Post create(PostContent postContent, PostMeta postMeta, Member member, Suspect suspectEntity){
+        Post post = new Post();
+        post.postContent = postContent;
+        post.metaData = postMeta;
+        post.member = member;
+        post.suspectEntity = suspectEntity;
+        return post;
+    }
+
     public PostContent getContent() {
         return postContent;
     }

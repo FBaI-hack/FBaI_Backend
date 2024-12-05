@@ -16,7 +16,7 @@ public class Suspect {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long suspectId;
+    private Long suspectId;
 
     private String name;
     private int count;

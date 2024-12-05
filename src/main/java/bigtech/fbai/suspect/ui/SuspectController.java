@@ -23,12 +23,13 @@ public class SuspectController {
 
     @PostMapping("")
     public CommonSuccessDto createSuspect(@RequestBody SuspectCreateRequestDto suspectCreateRequestDto){
-        return suspectService.createSuspect(suspectCreateRequestDto);
+        suspectService.createSuspect(suspectCreateRequestDto);
+        return CommonSuccessDto.success();
     }
 
     @GetMapping("")
     public ResponseDto<Suspect> getSuspect(@RequestParam("name") String name, @RequestParam("email") String email,
                                            @RequestParam("bank") String bank, @RequestParam("account") String account, @RequestParam("platform") String platform){
-        return ResponseDto.ok(suspectService.getSuspects(name,email,bank,account,platform));
+        return ResponseDto.ok(suspectService.getSuspect(name,email,bank,account,platform));
     }
 }

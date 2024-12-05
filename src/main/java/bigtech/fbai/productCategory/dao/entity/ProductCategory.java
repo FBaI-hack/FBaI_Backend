@@ -1,5 +1,6 @@
-package bigtech.fbai.post.dao.entity;
+package bigtech.fbai.productCategory.dao.entity;
 
+import bigtech.fbai.post.dao.entity.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,12 +22,17 @@ public class ProductCategory {
     @Column(name = "product_category_id")
     private long productCategoryId;
 
-    private String title;
+    private String name;
     private String imageUrl;
     private int count;
 
-    @OneToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+
+    public static ProductCategory from(String name, String imageUrl, int count) {
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.name = name;
+        productCategory.imageUrl = imageUrl;
+        productCategory.count = count;
+        return productCategory;
+    }
 
 }

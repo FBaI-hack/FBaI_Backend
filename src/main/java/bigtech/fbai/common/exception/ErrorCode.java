@@ -16,8 +16,7 @@ public enum ErrorCode {
   NOT_FOUND_LOGIN_USER(40401, HttpStatus.NOT_FOUND, "로그인한 사용자가 존재하지 않습니다."),
   NOT_FOUND_AUTHORIZATION_HEADER(40401, HttpStatus.NOT_FOUND, "Authorization 헤더가 존재하지 않습니다."),
   NOT_FOUND_MEMBER(40402, HttpStatus.NOT_FOUND, "해당 사용자가 존재하지 않습니다."),
-  NOT_FOUND_RESUME(40403, HttpStatus.NOT_FOUND, "해당 이력이 존재하지 않습니다."),
-  NOT_FOUND_S3(40404, HttpStatus.NOT_FOUND, "해당 파일을 찾을 수 없습니다."),
+  NOT_FOUND_POST(40403, HttpStatus.NOT_FOUND, "해당 게시글이 존재하지 않습니다."),
 
   // Invalid Argument Error
   MISSING_REQUEST_PARAMETER(40000, HttpStatus.BAD_REQUEST, "필수 요청 파라미터가 누락되었습니다."),

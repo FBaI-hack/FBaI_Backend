@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    public ResponseDto<Page<GetCommentResponseDto>> getComments(@Auth Long memberId, @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseDto<Page<GetCommentResponseDto>> getComments(@Auth Long memberId,
+        @PageableDefault(size = 10) Pageable pageable) {
         return ResponseDto.ok(commentService.findComments(memberId, pageable));
     }
 
@@ -37,7 +39,14 @@ public class CommentController {
     }
 
     @PatchMapping("/{comment_id}")
-    public ResponseDto<CommonSuccessDto> updateComment(@Auth Long memberId, @PathVariable("comment_id") Long commentId, @RequestBody UpdateCommentRequestDto dto) {
+    public ResponseDto<CommonSuccessDto> updateComment(@Auth Long memberId, @PathVariable("comment_id") Long commentId,
+        @RequestBody UpdateCommentRequestDto dto) {
         return ResponseDto.ok(commentService.updateComment(memberId, commentId, dto));
+    }
+
+    @DeleteMapping("/{comment_id}")
+    public ResponseDto<CommonSuccessDto> deleteComment(@Auth Long memberId,
+        @PathVariable("comment_id") Long commentId) {
+        return ResponseDto.ok(commentService.deleteComment(memberId, commentId));
     }
 }

@@ -11,7 +11,6 @@ import bigtech.fbai.post.application.dto.response.GetCommentResponseDto;
 import bigtech.fbai.post.dao.CommentRepository;
 import bigtech.fbai.post.dao.entity.Comment;
 import bigtech.fbai.post.dao.entity.Post;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,11 +56,22 @@ public class CommentService {
         return CommonSuccessDto.success();
     }
 
+    @Transactional
     public CommonSuccessDto updateComment(Long memberId, Long commentId, UpdateCommentRequestDto dto) {
         Comment comment = findComment(commentId);
         comment.validateMember(memberId);
 
         comment.update(dto.content());
+
+        return CommonSuccessDto.success();
+    }
+
+    @Transactional
+    public CommonSuccessDto deleteComment(Long memberId, Long commentId) {
+        Comment comment = findComment(commentId);
+        comment.validateMember(memberId);
+
+        commentRepository.delete(comment);
 
         return CommonSuccessDto.success();
     }

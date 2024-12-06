@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 
 @Getter
@@ -52,5 +51,13 @@ public class Comment extends BaseTimeEntity {
         }
 
         return comment;
+    }
+
+    public void validateMember(Long memberId) {
+        member.validateMemberId(memberId);
+    }
+
+    public void update(String content) {
+        this.content = content;
     }
 }

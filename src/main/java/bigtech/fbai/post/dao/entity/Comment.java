@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 
 @Getter
@@ -38,4 +39,18 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public static Comment create(Member member, Post post, String content, Comment parentComment) {
+        Comment comment = new Comment();
+        comment.member = member;
+        comment.post = post;
+        comment.content = content;
+
+        if (parentComment != null) {
+            comment.parent = parentComment;
+            parentComment.childComments.add(comment);
+        }
+
+        return comment;
+    }
 }

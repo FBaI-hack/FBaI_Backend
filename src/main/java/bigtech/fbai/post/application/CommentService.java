@@ -6,10 +6,12 @@ import bigtech.fbai.common.exception.ErrorCode;
 import bigtech.fbai.member.app.MemberService;
 import bigtech.fbai.member.dao.entity.Member;
 import bigtech.fbai.post.application.dto.request.CreateCommentRequestDto;
+import bigtech.fbai.post.application.dto.request.UpdateCommentRequestDto;
 import bigtech.fbai.post.application.dto.response.GetCommentResponseDto;
 import bigtech.fbai.post.dao.CommentRepository;
 import bigtech.fbai.post.dao.entity.Comment;
 import bigtech.fbai.post.dao.entity.Post;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,10 @@ public class CommentService {
         if (commentId == null) {
             return null;
         }
+        return findComment(commentId);
+    }
+
+    public Comment findComment(Long commentId) {
         return commentRepository.findById(commentId)
             .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_COMMENT));
     }
@@ -47,6 +53,15 @@ public class CommentService {
 
         Comment comment = Comment.create(member, post, dto.content(), parentComment);
         commentRepository.save(comment);
+
+        return CommonSuccessDto.success();
+    }
+
+    public CommonSuccessDto updateComment(Long memberId, Long commentId, UpdateCommentRequestDto dto) {
+        Comment comment = findComment(commentId);
+        comment.validateMember(memberId);
+
+        comment.update(dto.content());
 
         return CommonSuccessDto.success();
     }

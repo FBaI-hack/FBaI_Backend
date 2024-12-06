@@ -1,5 +1,7 @@
 package bigtech.fbai.member.dao.entity;
 
+import bigtech.fbai.common.exception.CommonException;
+import bigtech.fbai.common.exception.ErrorCode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +39,12 @@ public class Member {
 
         if (introduce != null) {
             this.introduce = introduce;
+        }
+    }
+
+    public void validateMemberId(Long memberId) {
+        if (!this.id.equals(memberId)) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
         }
     }
 }

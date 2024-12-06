@@ -8,8 +8,4 @@ public record CommonSuccessDto(boolean isSuccess) {
   public static CommonSuccessDto success() {
     return new CommonSuccessDto(true);
   }
-
-  public static CommonSuccessDto fail() {
-    return new CommonSuccessDto(false);
-  }
 }

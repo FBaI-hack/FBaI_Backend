@@ -2,6 +2,8 @@ package bigtech.fbai.auth.ui;
 
 import bigtech.fbai.auth.app.AuthService;
 import bigtech.fbai.auth.app.dto.AuthRegisterRequestDto;
+import bigtech.fbai.auth.app.dto.LoginRequestDto;
+import bigtech.fbai.auth.app.dto.LoginResponseDto;
 import bigtech.fbai.common.dto.CommonSuccessDto;
 import bigtech.fbai.common.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +19,13 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @PostMapping("/login")
+    public ResponseDto<LoginResponseDto> login(@RequestBody LoginRequestDto dto) {
+        return ResponseDto.ok(authService.login(dto));
+    }
+
     @PostMapping("/register")
-    private ResponseDto<CommonSuccessDto> register(@RequestBody AuthRegisterRequestDto dto) {
+    public ResponseDto<CommonSuccessDto> register(@RequestBody AuthRegisterRequestDto dto) {
         return ResponseDto.created(authService.register(dto));
     }
 }

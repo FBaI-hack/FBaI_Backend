@@ -21,7 +21,16 @@ public class ExceptionDto {
     this.message = errorCode.getMessage();
   }
 
+  public ExceptionDto(Integer code, String message) {
+    this.code = code;
+    this.message = message;
+  }
+
   public static ExceptionDto of(ErrorCode errorCode) {
     return new ExceptionDto(errorCode);
+  }
+
+  public static ExceptionDto of(ErrorCode errorCode, String message) {
+    return new ExceptionDto(errorCode.getCode(), message);
   }
 }

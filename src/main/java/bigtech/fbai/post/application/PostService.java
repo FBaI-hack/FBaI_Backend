@@ -21,6 +21,11 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    public Post findPost(Long postId) {
+        return postRepository.findById(postId)
+            .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_COMMENT));
+    }
+
     public GetPagedPostsResponseDto getPosts(String category, int page) {
         List<Post> posts = postRepository.findPostsByCategory(category,page);
         return GetPagedPostsResponseDto.from(posts);

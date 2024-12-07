@@ -38,4 +38,26 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public static Comment create(Member member, Post post, String content, Comment parentComment) {
+        Comment comment = new Comment();
+        comment.member = member;
+        comment.post = post;
+        comment.content = content;
+
+        if (parentComment != null) {
+            comment.parent = parentComment;
+            parentComment.childComments.add(comment);
+        }
+
+        return comment;
+    }
+
+    public void validateMember(Long memberId) {
+        member.validateMemberId(memberId);
+    }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

@@ -142,8 +142,9 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional
     public void deletePost(Long memberId, Long postId) {
-        Post post = validatePostOwnership(memberId, postId);
+        Post post = validatePostOwnership(postId,memberId);
         postRepository.delete(post);
     }
 

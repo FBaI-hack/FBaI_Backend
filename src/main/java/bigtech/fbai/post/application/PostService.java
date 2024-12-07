@@ -10,11 +10,9 @@ import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import bigtech.fbai.post.dao.PostRepository;
 import bigtech.fbai.post.dao.entity.Post;
 import bigtech.fbai.post.dao.entity.PostContent;
-import bigtech.fbai.post.dao.entity.PostMeta;
 import bigtech.fbai.productCategory.app.ProductCategoryService;
 import bigtech.fbai.productCategory.dao.entity.ProductCategory;
 import bigtech.fbai.suspect.app.SuspectService;
-import bigtech.fbai.suspect.app.dto.request.SuspectCreateRequestDto;
 import bigtech.fbai.suspect.dao.entity.Suspect;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +44,10 @@ public class PostService {
     }
 
     @Transactional
-    public boolean createPost(long memberId, CreatePostRequestDto createPostRequestDto) {
+    public boolean createPost(Long memberId, CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.findMember(memberId);
 
-        Suspect suspect = findOrCreateSuspect(createPostRequestDto.suspectCreateRequestDto());
+        Suspect suspect = findOrCreateSuspect(createPostRequestDto);
         ProductCategory productCategory = findProductCategory(createPostRequestDto.productCategoryName());
 
         String title = createPostRequestDto.title();
@@ -59,9 +57,8 @@ public class PostService {
         String productName = createPostRequestDto.productName();
 
         PostContent postContent = PostContent.create(title,content,productName,postUrl,productCategory);
-        PostMeta postMeta = PostMeta.create(category, 0);
 
-        Post post = Post.create(postContent,postMeta,member,suspect);
+        Post post = Post.create(postContent,category,member,suspect);
 
         postRepository.save(post);
         return true;
@@ -71,19 +68,30 @@ public class PostService {
         ProductCategory productCategory = null;
         if(productCategoryService.getProductCategory(productCategoryName) != null){
             productCategory = productCategoryService.getProductCategory(productCategoryName);
+            productCategory.countPlus();
         }
         return productCategory;
     }
 
-    private Suspect findOrCreateSuspect(SuspectCreateRequestDto suspectCreateRequestDto) {
-        Suspect suspect = null;
-        if(suspectCreateRequestDto != null){
-            suspect = suspectService.getSuspect(suspectCreateRequestDto.name(), suspectCreateRequestDto.email(), suspectCreateRequestDto.bank(),
-                    suspectCreateRequestDto.account(), suspectCreateRequestDto.platform());
-            if(suspect == null){
-                suspect = suspectService.createSuspect(suspectCreateRequestDto);
-            }
+    private Suspect findOrCreateSuspect(CreatePostRequestDto createPostRequestDto) {
+        String name = createPostRequestDto.suspect_name();
+        String email = createPostRequestDto.suspect_email();
+        String account = createPostRequestDto.suspect_account();
+        String bank = createPostRequestDto.suspect_bank();
+        String platform = createPostRequestDto.suspect_platform();
+
+        if (name.isEmpty() || email.isEmpty() || account.isEmpty() || bank.isEmpty() || platform.isEmpty()) {
+            return null;
         }
+
+        Suspect suspect = suspectService.getSuspect(name, email, account, bank, platform) ;
+        if(suspect != null){
+            suspect.countIncrement();
+            return suspect;
+        }
+
+        suspect = suspectService.createSuspect(name, email, account, bank, platform);
+        suspect.countIncrement();
         return suspect;
     }
 }

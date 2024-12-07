@@ -28,8 +28,8 @@ public record GetPostResponseDto(Long postId, String memberName, String profileI
             .profileImgUrl(member.getImageUrl())
             .title(postContent.getTitle())
             .content(postContent.getContent())
-            .createdAt(metadata.getCreatedAt())
-            .updatedAt(metadata.getUpdatedAt())
+            .createdAt(post.getCreatedAt())
+            .updatedAt(post.getUpdatedAt())
             .count(metadata.getCount())
             .category(metadata.getCategory())
 

@@ -5,13 +5,11 @@ import static jakarta.persistence.FetchType.LAZY;
 import bigtech.fbai.productCategory.dao.entity.ProductCategory;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
@@ -25,7 +23,7 @@ public class PostContent {
 
     private String postUrl;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategoryEntity;
 

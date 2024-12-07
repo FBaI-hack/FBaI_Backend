@@ -4,6 +4,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 import static org.hibernate.annotations.OnDeleteAction.SET_NULL;
 
+import bigtech.fbai.common.dao.entity.BaseTimeEntity;
 import bigtech.fbai.member.dao.entity.Member;
 import bigtech.fbai.suspect.dao.entity.Suspect;
 import jakarta.persistence.Column;
@@ -23,7 +24,7 @@ import org.hibernate.annotations.OnDelete;
 @Entity
 @NoArgsConstructor
 @Table(name = "post")
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +46,15 @@ public class Post {
     @JoinColumn(name = "suspect_id")
     @OnDelete(action = SET_NULL)
     private Suspect suspectEntity;
+
+    public static Post create(PostContent postContent,String category, Member member, Suspect suspectEntity){
+        Post post = new Post();
+        post.postContent = postContent;
+        post.metaData = PostMeta.create(category,1);
+        post.member = member;
+        post.suspectEntity = suspectEntity;
+        return post;
+    }
 
     public PostContent getContent() {
         return postContent;

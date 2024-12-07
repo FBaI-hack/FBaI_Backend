@@ -5,6 +5,7 @@ import bigtech.fbai.common.exception.ErrorCode;
 import bigtech.fbai.member.app.MemberService;
 import bigtech.fbai.member.dao.entity.Member;
 import bigtech.fbai.post.application.dto.request.CreatePostRequestDto;
+import bigtech.fbai.post.application.dto.response.CreatePostResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPagedPostsResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import bigtech.fbai.post.dao.PostRepository;
@@ -49,8 +50,10 @@ public class PostService {
     }
 
     @Transactional
-    public boolean createPost(Long memberId, CreatePostRequestDto createPostRequestDto) {
+    public CreatePostResponseDto createPost(Long memberId, CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.findMember(memberId);
+
+        String productCategoryName = createPostRequestDto.productCategoryName();
 
         Suspect suspect = findOrCreateSuspect(createPostRequestDto);
         ProductCategory productCategory = findProductCategory(createPostRequestDto.productCategoryName());
@@ -66,7 +69,7 @@ public class PostService {
         Post post = Post.create(postContent,category,member,suspect);
 
         postRepository.save(post);
-        return true;
+        return new CreatePostResponseDto(title, category, content, productCategoryName, postUrl, productName, suspect);
     }
 
     private ProductCategory findProductCategory(String productCategoryName) {

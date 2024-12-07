@@ -11,6 +11,7 @@ import bigtech.fbai.post.application.dto.response.GetPagedPostsResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import bigtech.fbai.post.application.dto.response.UpdatePostResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,11 @@ public class PostController {
     @PatchMapping("/{post_id}")
     public CommonSuccessDto updatePost(@Auth Long memberId,@PathVariable("post_id") Long postId, @RequestBody UpdatePostRequestDto updatePostRequestDto){
         postService.updatePost(memberId,postId,updatePostRequestDto);
+        return CommonSuccessDto.success();
+    }
+    @DeleteMapping("/{post_id}")
+    public CommonSuccessDto deletePost(@Auth Long memberId,@PathVariable("post_id") Long postId){
+        postService.deletePost(memberId, postId);
         return CommonSuccessDto.success();
     }
 

@@ -56,6 +56,20 @@ public class Post extends BaseTimeEntity {
         return post;
     }
 
+    public void update(PostContent postContent, PostMeta postmeta, Suspect suspect){
+        if(postContent != null){
+            this.postContent = postContent;
+        }
+
+        if(postmeta != null){
+            this.metaData = postmeta;
+        }
+
+        if(suspect != null){
+            this.suspectEntity = suspect;
+        }
+    }
+
     public PostContent getContent() {
         return postContent;
     }

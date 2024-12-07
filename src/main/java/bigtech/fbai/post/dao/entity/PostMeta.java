@@ -17,4 +17,9 @@ public class PostMeta{
         postMeta.count = count;
         return postMeta;
     }
+
+    public void update(String category, int count) {
+        this.category =category;
+        this.count =count;
+    }
 }

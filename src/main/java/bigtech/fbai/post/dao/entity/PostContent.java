@@ -40,4 +40,26 @@ public class PostContent {
         postContent.comments = new ArrayList<>();
         return postContent;
     }
+
+    public void update(String title, String content, String productName, String postUrl, ProductCategory productCategory) {
+        if(title != null){
+            this.title = title;
+        }
+
+        if(content != null){
+            this.content = content;
+        }
+
+        if(productName != null){
+            this.productName = productName;
+        }
+
+        if(postUrl != null){
+            this.postUrl = postUrl;
+        }
+
+        if(productCategory != null){
+            this.productCategoryEntity = productCategory;
+        }
+    }
 }

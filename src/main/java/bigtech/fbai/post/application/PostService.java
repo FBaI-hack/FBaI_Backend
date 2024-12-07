@@ -5,17 +5,20 @@ import bigtech.fbai.common.exception.ErrorCode;
 import bigtech.fbai.member.app.MemberService;
 import bigtech.fbai.member.dao.entity.Member;
 import bigtech.fbai.post.application.dto.request.CreatePostRequestDto;
+import bigtech.fbai.post.application.dto.request.UpdatePostRequestDto;
 import bigtech.fbai.post.application.dto.response.CreatePostResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPagedPostsResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import bigtech.fbai.post.dao.PostRepository;
 import bigtech.fbai.post.dao.entity.Post;
 import bigtech.fbai.post.dao.entity.PostContent;
+import bigtech.fbai.post.dao.entity.PostMeta;
 import bigtech.fbai.productCategory.app.ProductCategoryService;
 import bigtech.fbai.productCategory.dao.entity.ProductCategory;
 import bigtech.fbai.suspect.app.SuspectService;
 import bigtech.fbai.suspect.dao.entity.Suspect;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,15 +57,21 @@ public class PostService {
         Member member = memberService.findMember(memberId);
 
         String productCategoryName = createPostRequestDto.productCategoryName();
-
-        Suspect suspect = findOrCreateSuspect(createPostRequestDto);
-        ProductCategory productCategory = findProductCategory(createPostRequestDto.productCategoryName());
-
         String title = createPostRequestDto.title();
         String content = createPostRequestDto.content();
         String category = createPostRequestDto.category();
         String postUrl = createPostRequestDto.postUrl();
         String productName = createPostRequestDto.productName();
+        String name = createPostRequestDto.suspect_name();
+        String email = createPostRequestDto.suspect_email();
+        String account = createPostRequestDto.suspect_account();
+        String bank = createPostRequestDto.suspect_bank();
+        String platform = createPostRequestDto.suspect_platform();
+
+        Suspect suspect = findOrCreateSuspect(name, email, account, bank, platform);
+        ProductCategory productCategory = findProductCategory(createPostRequestDto.productCategoryName());
+
+
 
         PostContent postContent = PostContent.create(title,content,productName,postUrl,productCategory);
 
@@ -81,13 +90,7 @@ public class PostService {
         return productCategory;
     }
 
-    private Suspect findOrCreateSuspect(CreatePostRequestDto createPostRequestDto) {
-        String name = createPostRequestDto.suspect_name();
-        String email = createPostRequestDto.suspect_email();
-        String account = createPostRequestDto.suspect_account();
-        String bank = createPostRequestDto.suspect_bank();
-        String platform = createPostRequestDto.suspect_platform();
-
+    private Suspect findOrCreateSuspect(String name, String email, String account, String bank, String platform) {
         if (name.isEmpty() || email.isEmpty() || account.isEmpty() || bank.isEmpty() || platform.isEmpty()) {
             return null;
         }
@@ -102,4 +105,46 @@ public class PostService {
         suspect.countIncrement();
         return suspect;
     }
+
+    @Transactional
+    public void updatePost(Long memberId, Long postId, UpdatePostRequestDto updatePostRequestDto) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_POST));
+
+        if (!Objects.equals(memberId, post.getMember().getId())) {
+            throw new CommonException(ErrorCode.INVALID_ACCESS_URL);
+        }
+
+        ProductCategory productCategory = productCategoryService.getProductCategory(updatePostRequestDto.productCategoryName());
+        if (productCategory == null) {
+            throw new CommonException(ErrorCode.NOT_FOUND_RESOURCE);
+        }
+
+        Suspect suspect = findOrCreateSuspect(
+                updatePostRequestDto.suspectName(),
+                updatePostRequestDto.suspectEmail(),
+                updatePostRequestDto.suspectAccount(),
+                updatePostRequestDto.suspectBank(),
+                updatePostRequestDto.suspectPlatform()
+        );
+
+        PostContent postContent = post.getContent();
+        postContent.update(
+                updatePostRequestDto.title(),
+                updatePostRequestDto.content(),
+                updatePostRequestDto.productName(),
+                updatePostRequestDto.postUrl(),
+                productCategory
+        );
+
+        PostMeta postMeta = post.getMetadata();
+        postMeta.update(updatePostRequestDto.category(), updatePostRequestDto.count());
+
+        post.update(postContent, postMeta, suspect);
+        log.info("postUrl: {}", post.getPostContent().getPostUrl());
+        log.info("ProductName: {}", post.getPostContent().getProductName());
+
+        postRepository.save(post);
+    }
+
 }

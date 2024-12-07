@@ -5,6 +5,7 @@ import bigtech.fbai.common.dto.CommonSuccessDto;
 import bigtech.fbai.common.dto.ResponseDto;
 import bigtech.fbai.post.application.PostService;
 import bigtech.fbai.post.application.dto.request.CreatePostRequestDto;
+import bigtech.fbai.post.application.dto.response.CreatePostResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPagedPostsResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,8 @@ public class PostController {
         return ResponseDto.ok(postService.getPost(postId));
     }
     @PostMapping("")
-    public CommonSuccessDto createPost(@Auth Long memberId, @RequestBody CreatePostRequestDto createPostRequestDto){
-        postService.createPost(memberId,createPostRequestDto);
-        return CommonSuccessDto.success();
+    public ResponseDto<CreatePostResponseDto> createPost(@Auth Long memberId, @RequestBody CreatePostRequestDto createPostRequestDto){
+        return ResponseDto.created(postService.createPost(memberId,createPostRequestDto));
     }
 
 

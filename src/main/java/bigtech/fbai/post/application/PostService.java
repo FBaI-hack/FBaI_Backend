@@ -108,12 +108,7 @@ public class PostService {
 
     @Transactional
     public void updatePost(Long memberId, Long postId, UpdatePostRequestDto updatePostRequestDto) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_POST));
-
-        if (!Objects.equals(memberId, post.getMember().getId())) {
-            throw new CommonException(ErrorCode.INVALID_ACCESS_URL);
-        }
+        Post post = validatePostOwnership(memberId, postId);
 
         ProductCategory productCategory = productCategoryService.getProductCategory(updatePostRequestDto.productCategoryName());
         if (productCategory == null) {
@@ -147,4 +142,19 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public void deletePost(Long memberId, Long postId) {
+        Post post = validatePostOwnership(memberId, postId);
+        postRepository.delete(post);
+    }
+
+    private Post validatePostOwnership(Long postId, Long memberId){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_POST));
+
+        if (!Objects.equals(memberId, post.getMember().getId())) {
+            throw new CommonException(ErrorCode.INVALID_ACCESS_URL);
+        }
+
+        return post;
+    }
 }

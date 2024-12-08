@@ -30,7 +30,7 @@ public class JwtTokenGenerator {
 
     public String generateToken(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        String id = userDetails.getUsername();
+        String id = userDetails.getEmail();
 
         return Jwts.builder()
             .subject(id)

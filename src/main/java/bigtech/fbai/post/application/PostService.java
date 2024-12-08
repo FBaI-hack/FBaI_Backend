@@ -10,6 +10,7 @@ import bigtech.fbai.post.application.dto.response.CreatePostResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPagedPostsResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import bigtech.fbai.post.dao.PostRepository;
+import bigtech.fbai.post.dao.entity.Category;
 import bigtech.fbai.post.dao.entity.Post;
 import bigtech.fbai.post.dao.entity.PostContent;
 import bigtech.fbai.post.dao.entity.PostMeta;
@@ -59,7 +60,7 @@ public class PostService {
         String productCategoryName = createPostRequestDto.productCategoryName();
         String title = createPostRequestDto.title();
         String content = createPostRequestDto.content();
-        String category = createPostRequestDto.category();
+        Category category = createPostRequestDto.category();
         String postUrl = createPostRequestDto.postUrl();
         String productName = createPostRequestDto.productName();
         String name = createPostRequestDto.suspect_name();

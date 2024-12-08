@@ -1,5 +1,6 @@
 package bigtech.fbai.post.dao;
 
+import bigtech.fbai.post.dao.entity.Category;
 import bigtech.fbai.post.dao.entity.Post;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             + " where p.metaData.category = :category"
             + " order by p.postId asc"
             + " limit 10 offset :page ")
-    List<Post> findPostsByCategory(@Param("category")String category, @Param("page") int page);
+    List<Post> findPostsByCategory(@Param("category") Category category, @Param("page") int page);
 
     @Query("select p from Post p"
         + " join fetch p.postContent.comments c"

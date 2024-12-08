@@ -1,9 +1,7 @@
-package bigtech.fbai.config.security.provider;
+package bigtech.fbai.config.security.form;
 
 import bigtech.fbai.common.exception.CommonException;
 import bigtech.fbai.common.exception.ErrorCode;
-import bigtech.fbai.config.security.info.CustomUserDetails;
-import bigtech.fbai.config.security.info.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,12 +14,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class CustomAuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
@@ -32,7 +29,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, null);
     }
 
-    @Override
     public boolean supports(Class<?> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }

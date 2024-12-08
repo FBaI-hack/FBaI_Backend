@@ -2,6 +2,7 @@ package bigtech.fbai.member.dao.entity;
 
 import bigtech.fbai.common.exception.CommonException;
 import bigtech.fbai.common.exception.ErrorCode;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Member {
 
     private String introduce;
 
+    @Column(length = 500)
     private String imageUrl;
 
     public void update(String nickname, String imageUrl, String introduce) {

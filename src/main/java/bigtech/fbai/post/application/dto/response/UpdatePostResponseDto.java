@@ -1,11 +1,12 @@
 package bigtech.fbai.post.application.dto.response;
 
+import bigtech.fbai.post.dao.entity.Category;
 import bigtech.fbai.post.dao.entity.Post;
 import bigtech.fbai.suspect.dao.entity.Suspect;
 import lombok.Builder;
 
 @Builder
-public record UpdatePostResponseDto(String title, String content, int count, String category,
+public record UpdatePostResponseDto(String title, String content, int count, Category category,
                                     String productCategoryName, String postUrl, String productName, Suspect suspect) {
 
     public static UpdatePostResponseDto from(Post post) {

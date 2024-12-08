@@ -47,7 +47,7 @@ public class Post extends BaseTimeEntity {
     @OnDelete(action = SET_NULL)
     private Suspect suspectEntity;
 
-    public static Post create(PostContent postContent,String category, Member member, Suspect suspectEntity){
+    public static Post create(PostContent postContent,Category category, Member member, Suspect suspectEntity){
         Post post = new Post();
         post.postContent = postContent;
         post.metaData = PostMeta.create(category,1);

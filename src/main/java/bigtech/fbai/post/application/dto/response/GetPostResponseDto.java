@@ -1,6 +1,7 @@
 package bigtech.fbai.post.application.dto.response;
 
 import bigtech.fbai.member.dao.entity.Member;
+import bigtech.fbai.post.dao.entity.Category;
 import bigtech.fbai.post.dao.entity.Post;
 import bigtech.fbai.post.dao.entity.PostContent;
 import bigtech.fbai.post.dao.entity.PostMeta;
@@ -9,7 +10,7 @@ import lombok.Builder;
 
 @Builder
 public record GetPostResponseDto(Long postId, String memberName, String profileImgUrl, String title, String content,
-                                 LocalDateTime createdAt, LocalDateTime updatedAt, int count, String category,
+                                 LocalDateTime createdAt, LocalDateTime updatedAt, int count, Category category,
                                  String postUrl, String productName,
                                  int like,
                                  PostCommentsResponseDto comments) {

@@ -1,9 +1,11 @@
 package bigtech.fbai.post.application.dto.request;
 
+import bigtech.fbai.post.dao.entity.Category;
+
 public record UpdatePostRequestDto(
         String title,
         String content,
-        String category,
+        Category category,
         int count,
         String productCategoryName,
         String postUrl,

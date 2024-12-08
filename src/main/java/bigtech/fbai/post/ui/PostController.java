@@ -10,6 +10,7 @@ import bigtech.fbai.post.application.dto.response.CreatePostResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPagedPostsResponseDto;
 import bigtech.fbai.post.application.dto.response.GetPostResponseDto;
 import bigtech.fbai.post.application.dto.response.UpdatePostResponseDto;
+import bigtech.fbai.post.dao.entity.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("")
-    public ResponseDto<GetPagedPostsResponseDto> getPosts(@RequestParam String category, @RequestParam int page){
+    public ResponseDto<GetPagedPostsResponseDto> getPosts(@RequestParam Category category, @RequestParam int page){
         return ResponseDto.ok(postService.getPosts(category,page));
     }
 
